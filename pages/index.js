@@ -1,4 +1,5 @@
 import styles from "../styles/Home.module.css";
+
 import Table from "../components/Table";
 import React, { Component } from "react";
 
@@ -10,7 +11,6 @@ class Home extends Component {
     this.state = {
       apiResponse: [],
       // apiResponse: "",
-
     };
   }
 

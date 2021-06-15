@@ -1,5 +1,6 @@
 import Row from "./Row";
-import React from "react";
+import styles from "../styles/Table.module.css";
+import React, { useState, useEffect } from "react";
 
 // export default class Table extends React.Component {
 //   constructor(props) {
@@ -43,49 +44,55 @@ import React from "react";
 // }
 
 const Table = ({ apiResponse }) => {
-  // console.log(apiResponse);
-  // for (let i in apiResponse) {
-  //   // console.log(apiResponse[i]);
-  //   for (let j in apiResponse) {
-  //     // console.log(apiResponse[j])
-  //   }
-  // }
+  const [tableData, setTableData] = useState("");
+
+  useEffect(() => {
+    setTableData(apiResponse);
+  }, [apiResponse]);
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Date/Time</th>
-          <th>Symbol</th>
-          <th>Open</th>
-          <th>High</th>
-          <th>Low</th>
-          <th>Close</th>
-          <th>Volume</th>
-        </tr>
-      </thead>
-      <tbody>
-        {/* {apiResponse.length > 0 ? (
-          apiResponse.rows.forEach((row, index) => {
+    <>
+      <table className={styles.table}>
+        {/* {console.log(`this is the tableData object:`, tableData)}
+        {console.log(`these are the columns:`, tableData.columns)}
+        {console.log(`these are the rows:`, tableData.rows)} */}
+        {tableData.columns ? (
+          tableData.columns.cells.map((columnName) => {
             return (
-              <tr key={index}>
-                <td>{row.dateTime}</td>
-                <td>{row.symbol}</td>
-                <td>{row.open}</td>
-                <td>{row.high}</td>
-                <td>{row.low}</td>
-                <td>{row.close}</td>
-                <td>{row.volume}</td>
-              </tr>
+              <th className={styles.th}>
+                <th className={styles.th}>{columnName.value}</th>
+              </th>
             );
           })
         ) : (
-          <tr>
-            <td colSpan="5">Loading...</td>
+          <tr className={styles.tr}>
+            <td className={styles.td} colSpan="5">
+              Loading...
+            </td>
           </tr>
-        )} */}
-      </tbody>
-    </table>
+        )}
+
+        <tbody>
+          {tableData.rows ? (
+            tableData.rows.map((row) => {
+              return (
+                <tr className={styles.tr}>
+                  {row.cells.map((cell) => {
+                    return <td className={styles.td}>{cell.value}</td>;
+                  })}
+                </tr>
+              );
+            })
+          ) : (
+            <tr className={styles.tr}>
+              <td className={styles.td} colSpan="5">
+                Loading...
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </>
   );
 };
 
